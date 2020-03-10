@@ -15,5 +15,14 @@ function connectDB(productName, deptName, price) {
         console.log('connected as id ' + connection.threadId);
         return createNew(productName, deptName, price);
     });
+}
 
+function createNew(productType, deptartment, price){
+    let stringtopass = "INSERT INTO `auctions` (`product_name`, `deptartment_name`, `price`) VALUES (" + productType +","+ deptartment+","+ price+");";
+    connection.query(stringtopass);
+    connection.end();
+}
+
+module.exports = {
+    connectDB: connectDB
 }
