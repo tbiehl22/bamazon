@@ -74,3 +74,35 @@ var requestProduct = function() {
 		});
 	});
 };
+
+// Completes user's request to purchase product.
+var completePurchase = function(availableStock, price, productSales, productDepartment, selectedProductID, selectedProductUnits) {
+	
+	// Updates stock quantity once purchase complete.
+	var updatedStockQuantity = availableStock - selectedProductUnits;
+
+	// Calculates total price for purchase based on unit price, and number of units.
+	var totalPrice = price * selectedProductUnits;
+
+	// Updates total product sales.
+	var updatedProductSales = parseInt(productSales) + parseInt(totalPrice);
+	
+	// Updates stock quantity on the database based on user's purchase.
+	var query = "UPDATE products SET ? WHERE ?";
+	connection.query(query, [{
+		stock_quantity: updatedStockQuantity,
+		
+	}, {
+		item_id: selectedProductID
+	}], function(err, res) {
+
+		if (err) throw err;
+		// Tells user purchase is a success.
+		console.log("Your purchase is complete.");
+
+		// Display the total price for that purchase.
+        console.log("Your payment has been received in the amount of : " + totalPrice);
+        
+        displayProducts();
+	});
+};
