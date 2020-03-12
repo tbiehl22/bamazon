@@ -1,4 +1,6 @@
 var mysql = require("mysql");
+var inquirer = require("inquirer");
+
 let connection = mysql.createConnection({
     host: "127.0.0.1",
     port: 3306,
@@ -7,22 +9,22 @@ let connection = mysql.createConnection({
     database: "bamazon"
 });
 
-function connectDB(productName, deptName, price) {
-    connection.connect(function(err) {
-        console.log('HEEEEYYYYYY');
-        
-        if (err) throw err;
-        console.log('connected as id ' + connection.threadId);
-        return createNew(productName, deptName, price);
-    });
-}
+connection.connect(function(err) {
+    if (err) throw err;
+    displayProducts();
+  });
 
-function createNew(productType, deptartment, price){
-    let stringtopass = "INSERT INTO `auctions` (`product_name`, `deptartment_name`, `price`) VALUES (" + productType +","+ deptartment+","+ price+");";
-    connection.query(stringtopass);
-    connection.end();
-}
+  var displayProducts = function() {
+	var query = "Select * FROM products";
+	connection.query(query, function(err, res) {
 
-module.exports = {
-    connectDB: connectDB
-}
+		if (err) throw err;
+
+		for (var i = 0; i < res.length; i++) {
+			console.log("Product ID: " + res[i].item_id + " || Product Name: " +
+						res[i].product_name + " || Price: " + res[i].price);
+		}
+
+  		requestProduct();
+	});
+};
