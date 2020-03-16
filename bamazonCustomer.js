@@ -22,7 +22,7 @@ connection.connect(function(err) {
 
 		for (var i = 0; i < res.length; i++) {
 			console.log("Product ID: " + res[i].item_id + " || Product Name: " +
-						res[i].product_name + " || Price: " + res[i].price);
+						res[i].product_name + " || Price: $" + res[i].price);
 		}
 
   		requestProduct();
@@ -67,7 +67,7 @@ var requestProduct = function() {
 				completePurchase(available_stock, price_per_unit, productSales, productDepartment, answer.productID, answer.productUnits);
 			} else {
 
-				console.log("There isn't enough in stock!");
+				console.log("Sorry, there isn't enough in stock!");
 
 				requestProduct();
 			}
@@ -93,7 +93,7 @@ var completePurchase = function(availableStock, price, productSales, productDepa
 
 		if (err) throw err;
 		console.log("Your purchase is complete.");
-        console.log("Your payment has been received in the amount of : " + totalPrice);
+        console.log("Your payment has been received in the amount of : $" + totalPrice);
         
         displayProducts();
 	});
